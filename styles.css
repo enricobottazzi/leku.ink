@@ -114,7 +114,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.0;
+  gap: 0;
   color: var(--fg);           /* makes SVG stroke follow your theme */
   transform: rotate(-90deg);  /* rotate like the old heading */
 }
@@ -133,4 +133,5 @@ body {
 .zigzag {
   width: clamp(50px, 10vw, 150px);
   height: auto;
+  margin-top: -1rem;
 }
