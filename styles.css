@@ -1,6 +1,5 @@
 body {
   font-family: 'JetBrains Mono', monospace;
-  transition: background-color 0.3s, color 0.3s;
 }
 .container {
     display: flex;
@@ -106,7 +105,6 @@ body {
   font-family: 'JetBrains Mono', monospace;
   background-color: var(--bg);
   color: var(--fg);
-  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Stack the zigzag above the title, then rotate the whole stack */
