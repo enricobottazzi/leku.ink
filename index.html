@@ -4,15 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leku</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+<script>
+  // Minimal, self-contained color game logic (no other page changes)
+  const defaultBgColor = '#ffffff';
+  const defaultFontColor = '#111111';
+
+  function toggleColorGame() {
+    const panel = document.getElementById('colorGame');
+    panel.classList.toggle('hidden');
+  }
+
+  function updateBackgroundColor(hex) {
+    document.body.style.setProperty('background-color', hex, 'important');
+    localStorage.setItem('customBgColor', hex);
+  }
+
+  function updateFontColor(hex) {
+    document.body.style.setProperty('color', hex, 'important');
+    // Make sure children inherit immediately (your h1/p already do)
+    localStorage.setItem('customFontColor', hex);
+  }
+
+  function rgbToHex(rgb) {
+    const m = rgb.match(/\d+/g);
+    if (!m) return rgb;
+    const [r,g,b] = m.map(n => parseInt(n, 10));
+    return '#' + ((1<<24) + (r<<16) + (g<<8) + b).toString(16).slice(1);
+  }
+
+  function updateBackgroundColorFromBox(box) {
+    updateBackgroundColor(rgbToHex(getComputedStyle(box).backgroundColor));
+  }
+  function updateFontColorFromBox(box) {
+    updateFontColor(rgbToHex(getComputedStyle(box).backgroundColor));
+  }
+
+  function getRandomHexColor() {
+    return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+  }
+
+  function refreshRandomColors() {
+    for (let i=1; i<=4; i++) {
+      const bgBox = document.querySelector('.bg-random-' + i);
+      const ftBox = document.querySelector('.font-random-' + i);
+      if (bgBox) bgBox.style.backgroundColor = getRandomHexColor();
+      if (ftBox) ftBox.style.backgroundColor = getRandomHexColor();
+    }
+  }
+
+  function resetColors() {
+    // Clear saved
+    localStorage.removeItem('customBgColor');
+    localStorage.removeItem('customFontColor');
+    // Remove inline overrides
+    document.body.style.removeProperty('background-color');
+    document.body.style.removeProperty('color');
+    // Reapply defaults explicitly (optional)
+    document.body.style.setProperty('background-color', defaultBgColor, 'important');
+    document.body.style.setProperty('color', defaultFontColor, 'important');
+  }
+
+  function loadSavedColors() {
+    const bg = localStorage.getItem('customBgColor');
+    const fg = localStorage.getItem('customFontColor');
+    if (bg) document.body.style.setProperty('background-color', bg, 'important');
+    if (fg) document.body.style.setProperty('color', fg, 'important');
+  }
+
+  // Init once DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    refreshRandomColors();
+    loadSavedColors();
+  });
+</script>
+
 <body>
     <div class="container">
         <h1>Leku</h1>
         <p>strumenti di ricerca</p>
     </div>
+
+<!-- Color Game Toggle Button -->
+<button class="game-toggle" onclick="toggleColorGame()" aria-label="Toggle color game"></button>
+
+<!-- Color Game Panel -->
+<div class="color-game hidden" id="colorGame" role="dialog" aria-label="Color game">
+  <div class="color-controls">
+    <div class="color-row" aria-label="Background colors">
+      <div class="preset-color" style="background:#ffffff" onclick="updateBackgroundColor('#ffffff')" title="BG: White"></div>
+      <div class="preset-color" style="background:#000000" onclick="updateBackgroundColor('#000000')" title="BG: Black"></div>
+      <div class="preset-color bg-random-1" onclick="updateBackgroundColorFromBox(this)" title="BG: random 1"></div>
+      <div class="preset-color bg-random-2" onclick="updateBackgroundColorFromBox(this)" title="BG: random 2"></div>
+      <div class="preset-color bg-random-3" onclick="updateBackgroundColorFromBox(this)" title="BG: random 3"></div>
+      <div class="preset-color bg-random-4" onclick="updateBackgroundColorFromBox(this)" title="BG: random 4"></div>
+    </div>
+
+    <div class="color-row" aria-label="Text colors">
+      <div class="preset-color" style="background:#000000" onclick="updateFontColor('#000000')" title="Text: Black"></div>
+      <div class="preset-color" style="background:#ffffff" onclick="updateFontColor('#ffffff')" title="Text: White"></div>
+      <div class="preset-color font-random-1" onclick="updateFontColorFromBox(this)" title="Text: random 1"></div>
+      <div class="preset-color font-random-2" onclick="updateFontColorFromBox(this)" title="Text: random 2"></div>
+      <div class="preset-color font-random-3" onclick="updateFontColorFromBox(this)" title="Text: random 3"></div>
+      <div class="preset-color font-random-4" onclick="updateFontColorFromBox(this)" title="Text: random 4"></div>
+    </div>
+  </div>
+
+  <div class="color-row" style="margin-top:.5rem;">
+    <button class="reset-btn" onclick="resetColors()">Reset</button>
+    <button class="reset-btn" onclick="refreshRandomColors()" style="margin-left:.5rem;">Refresh</button>
+  </div>
+</div>
 </body>
 </html>

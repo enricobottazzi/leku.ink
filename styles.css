@@ -15,3 +15,79 @@ body {
 .container h1, .container p {
     transform: rotate(-90deg);
 }
+
+/* Color Game (isolated) */
+.color-game {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  min-width: 200px;
+  backdrop-filter: blur(10px);
+}
+.color-controls { display: flex; flex-direction: column; gap: 0.75rem; }
+.color-row { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+
+.preset-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  transition: transform 0.2s ease;
+}
+.preset-color:hover { transform: scale(1.1); }
+
+.reset-btn {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.65rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+.reset-btn:hover { background: #555; }
+
+.game-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: opacity 0.2s ease;
+}
+.game-toggle::before {
+  content: "🎨";
+  display: inline-block;
+  line-height: 30px;
+  font-size: 16px;
+}
+.game-toggle:hover { opacity: 0.8; }
+
+.color-game.hidden { display: none; }
+
+/* Respect dark mode for the panel */
+@media (prefers-color-scheme: dark) {
+  .color-game {
+    background: rgba(20,20,20,0.9);
+    border-color: #333;
+  }
+  .preset-color { border-color: #444; }
+}
