@@ -108,3 +108,29 @@ body {
   color: var(--fg);
   transition: background-color 0.3s, color 0.3s;
 }
+
+/* Stack the zigzag above the title, then rotate the whole stack */
+.title-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--fg);           /* makes SVG stroke follow your theme */
+  transform: rotate(-90deg);  /* rotate like the old heading */
+}
+
+/* Keep the subtitle rotated like before */
+.container p {
+  transform: rotate(-90deg);
+}
+
+/* Cancel any inherited rotation on the H1 itself so text is upright within the rotated stack */
+.title-stack h1 {
+  transform: none;
+}
+
+/* Responsive zigzag size */
+.zigzag {
+  width: clamp(200px, 40vw, 600px);
+  height: auto;
+}
