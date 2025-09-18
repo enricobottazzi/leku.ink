@@ -1,0 +1,17 @@
+body {
+  font-family: 'JetBrains Mono', monospace;
+  transition: background-color 0.3s, color 0.3s;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.container h1, .container p {
+    transform: rotate(-90deg);
+}
