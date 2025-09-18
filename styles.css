@@ -114,7 +114,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.0;
   color: var(--fg);           /* makes SVG stroke follow your theme */
   transform: rotate(-90deg);  /* rotate like the old heading */
 }
