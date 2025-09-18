@@ -131,6 +131,6 @@ body {
 
 /* Responsive zigzag size */
 .zigzag {
-  width: clamp(200px, 40vw, 600px);
+  width: clamp(50px, 10vw, 150px);
   height: auto;
 }
