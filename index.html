@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+  // Apply saved theme BEFORE paint (no flash)
+  (function () {
+    try {
+      var bg = localStorage.getItem('customBgColor');
+      var fg = localStorage.getItem('customFontColor');
+      var root = document.documentElement;
+
+      // Disable transitions during first paint
+      root.classList.add('prepaint');
+
+      // Use CSS variables so CSS picks them up immediately
+      if (bg) root.style.setProperty('--bg', bg);
+      if (fg) root.style.setProperty('--fg', fg);
+    } catch (e) { /* ignore */ }
+  })();
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="color-scheme" content="light dark">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leku</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <script>
-  // Minimal, self-contained color game logic (no other page changes)
   const defaultBgColor = '#ffffff';
   const defaultFontColor = '#111111';
 
@@ -17,13 +35,12 @@
   }
 
   function updateBackgroundColor(hex) {
-    document.body.style.setProperty('background-color', hex, 'important');
+    document.documentElement.style.setProperty('--bg', hex);
     localStorage.setItem('customBgColor', hex);
   }
 
   function updateFontColor(hex) {
-    document.body.style.setProperty('color', hex, 'important');
-    // Make sure children inherit immediately (your h1/p already do)
+    document.documentElement.style.setProperty('--fg', hex);
     localStorage.setItem('customFontColor', hex);
   }
 
@@ -55,28 +72,17 @@
   }
 
   function resetColors() {
-    // Clear saved
     localStorage.removeItem('customBgColor');
     localStorage.removeItem('customFontColor');
-    // Remove inline overrides
-    document.body.style.removeProperty('background-color');
-    document.body.style.removeProperty('color');
-    // Reapply defaults explicitly (optional)
-    document.body.style.setProperty('background-color', defaultBgColor, 'important');
-    document.body.style.setProperty('color', defaultFontColor, 'important');
+    document.documentElement.style.setProperty('--bg', defaultBgColor);
+    document.documentElement.style.setProperty('--fg', defaultFontColor);
   }
 
-  function loadSavedColors() {
-    const bg = localStorage.getItem('customBgColor');
-    const fg = localStorage.getItem('customFontColor');
-    if (bg) document.body.style.setProperty('background-color', bg, 'important');
-    if (fg) document.body.style.setProperty('color', fg, 'important');
-  }
-
-  // Init once DOM is ready
+  // No need to "load" here; the early <head> script already set variables pre-paint.
   document.addEventListener('DOMContentLoaded', () => {
     refreshRandomColors();
-    loadSavedColors();
+    // Re-enable transitions after the first frame
+    requestAnimationFrame(() => document.documentElement.classList.remove('prepaint'));
   });
 </script>
 

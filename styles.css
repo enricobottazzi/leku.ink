@@ -91,3 +91,20 @@ body {
   }
   .preset-color { border-color: #444; }
 }
+
+:root {
+  --bg: #ffffff; /* defaults */
+  --fg: #111111;
+}
+
+/* no-transition during first paint only */
+.prepaint *, .prepaint body {
+  transition: none !important;
+}
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.3s, color 0.3s;
+}
